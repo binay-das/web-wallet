@@ -2,7 +2,7 @@
 
 import EthWallet from "@/components/EthWallet";
 import SolWallet from "@/components/SolWallet";
-import { Tabs } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateMnemonic } from "bip39";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -42,32 +42,55 @@ export default function Home() {
     setSolWallets((prev) => [...prev, wallet]);
   };
   const handleDeleteSolWallet = (index: number) => {
-    setSolWallets(prev => prev.filter(w => w.index != index))
-  }
+    setSolWallets((prev) => prev.filter((w) => w.index != index));
+    toast.success("Wallet deleted");
+  };
 
   const handleAddEthWallet = (wallet: Wallet) => {
     setEthWallets((prev) => [...prev, wallet]);
-  }
+  };
   const handleDeleteEthWallet = (index: number) => {
-    setEthWallets(prev => prev.filter(w => w.index != index));
-  }
+    setEthWallets((prev) => prev.filter((w) => w.index != index));
+    toast.success("Wallet deleted");
+  };
+
+  const deleteAllSolWallets = () => {
+    setSolWallets([]);
+    toast.success("All Solana wallets deleted");
+  };
+  const deleteAllEthWallets = () => {
+    setEthWallets([]);
+    toast.success("All Etherium wallets deleted");
+  };
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <Tabs></Tabs>
-      <SolWallet
-        mnemonic={mnemonic}
-        onGenerateMnemonic={newMnemonic}
-        wallets={solWallets}
-        onAddWallet={handleAddSolWallet}
-        onDeleteWallet={handleDeleteSolWallet}
-      />
-      <EthWallet 
-        mnemonic={mnemonic}
-        onGenerateMnemonic={newMnemonic}
-        wallets={ethWallets}
-        onAddWallet={handleAddEthWallet}
-        onDeleteWallet={handleDeleteEthWallet} />
+    <div className="min-h-screen bg-background p-4  max-w-7xl mx-auto px-8">
+      <Tabs defaultValue="eth">
+        <TabsList className="w-2xl mx-auto h-12">
+          <TabsTrigger value="eth" className="cursor-pointer">Etherium</TabsTrigger>
+          <TabsTrigger value="sol" className="cursor-pointer">Solana</TabsTrigger>
+        </TabsList>
+        <TabsContent value="eth">
+          <EthWallet
+            mnemonic={mnemonic}
+            onGenerateMnemonic={newMnemonic}
+            wallets={ethWallets}
+            onAddWallet={handleAddEthWallet}
+            onDeleteWallet={handleDeleteEthWallet}
+            onDeleteAll={deleteAllEthWallets}
+          />
+        </TabsContent>
+        <TabsContent value="sol">
+          <SolWallet
+            mnemonic={mnemonic}
+            onGenerateMnemonic={newMnemonic}
+            wallets={solWallets}
+            onAddWallet={handleAddSolWallet}
+            onDeleteWallet={handleDeleteSolWallet}
+            onDeleteAll={deleteAllSolWallets}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
