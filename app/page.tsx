@@ -1,5 +1,6 @@
 "use client";
 
+import EthWallet from "@/components/EthWallet";
 import SolWallet from "@/components/SolWallet";
 import { Tabs } from "@/components/ui/tabs";
 import { generateMnemonic } from "bip39";
@@ -43,6 +44,14 @@ export default function Home() {
   const handleDeleteSolWallet = (index: number) => {
     setSolWallets(prev => prev.filter(w => w.index != index))
   }
+
+  const handleAddEthWallet = (wallet: Wallet) => {
+    setEthWallets((prev) => [...prev, wallet]);
+  }
+  const handleDeleteEthWallet = (index: number) => {
+    setEthWallets(prev => prev.filter(w => w.index != index));
+  }
+
   return (
     <div className="min-h-screen bg-background p-4">
       <Tabs></Tabs>
@@ -53,6 +62,12 @@ export default function Home() {
         onAddWallet={handleAddSolWallet}
         onDeleteWallet={handleDeleteSolWallet}
       />
+      <EthWallet 
+        mnemonic={mnemonic}
+        onGenerateMnemonic={newMnemonic}
+        wallets={ethWallets}
+        onAddWallet={handleAddEthWallet}
+        onDeleteWallet={handleDeleteEthWallet} />
     </div>
   );
 }
