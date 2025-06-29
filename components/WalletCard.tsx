@@ -26,8 +26,8 @@ export default function WalletCard({
   onDelete,
 }: WalletCardProps) {
   return (
-    <Card className="max-w-sm w-full shadow-sm gap-1">
-      <CardHeader className="flex flex-row justify-between items-center pb-">
+    <Card className="w-full max-w-sm shadow-sm gap-1">
+      <CardHeader className="flex flex-row justify-between items-center pb-2">
         <CardTitle className="text-lg">Wallet {walletNumber}</CardTitle>
         <Button
           variant="ghost"
